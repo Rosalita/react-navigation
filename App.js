@@ -3,6 +3,7 @@ import { StyleSheet, Button, View, Text } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 
 export default function App() {
@@ -22,6 +23,7 @@ class ScreenX extends React.Component {
   }
 }
 
+
 class ScreenA extends React.Component {
   render() {
     return (
@@ -36,6 +38,8 @@ class ScreenA extends React.Component {
     )
   }
 }
+
+
 
 class ScreenB extends React.Component {
   render() {
@@ -110,10 +114,40 @@ const SwitchNavigator = createSwitchNavigator({
   "RouteB": StackNavigator
 })
 
-const TabNavigator = createBottomTabNavigator({
-  "TabX": ScreenX,
-  "TabY": SwitchNavigator,
-})
+
+
+const TabNavigator = createBottomTabNavigator(
+  {
+    "TabX": ScreenX,
+    "TabY": SwitchNavigator,
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#FF1493',
+    },
+  }
+)
+
+
+ScreenX.navigationOptions = {
+  tabBarIcon: ({ tintColour }) => (
+    <Ionicons
+      name={'md-hourglass'}
+      size={25}
+      color={tintColour}
+    />
+  )
+}
+
+SwitchNavigator.navigationOptions = {
+  tabBarIcon: ({ tintColour }) => (
+    <Ionicons
+      name={'md-settings'}
+      size={25}
+      color={tintColour}
+    />
+  )
+}
 
 const AppNavigation = createAppContainer(TabNavigator);
 
