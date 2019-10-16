@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Button, View } from 'react-native';
+import { StyleSheet, Button, View, Text } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 export default function App() {
   return (
@@ -8,12 +9,45 @@ export default function App() {
   );
 }
 
+class ScreenA extends React.Component {
+  render() {
+    return (
+      <View style={styles.screenA}>
+        <Text>This is Screen A</Text>
+        <Button
+          title="Screen B"
+          onPress={() => this.props.navigation.navigate("RouteB")}
+        />
+      </View>
+    )
+  }
+}
+
+class ScreenB extends React.Component {
+  render() {
+    return (
+      <View style={styles.screenB}>
+        <Text>This is Screen B</Text>
+        <Button
+          title="Screen A"
+          onPress={() => this.props.navigation.navigate("RouteA")}
+        />
+        <Button
+          title="Switch Navigation to Screen One"
+          onPress={() => this.props.navigation.navigate("RouteOne")}
+        />
+      </View>
+    )
+  }
+}
+
 class ScreenOne extends React.Component {
   render() {
     return (
       <View style={styles.screenOne}>
+        <Text>This is Screen One</Text>
         <Button
-          title="Go To Screen Two"
+          title="Screen Two"
           onPress={() => this.props.navigation.navigate("RouteTwo")}
         />
       </View>
@@ -25,28 +59,59 @@ class ScreenTwo extends React.Component {
   render() {
     return (
       <View style={styles.screenTwo}>
+        <Text>This is Screen Two</Text>
         <Button
-          title="Go To Screen One"
-          onPress={() => this.props.navigation.navigate("RouteOne")}
+          title="Screen Three"
+          onPress={() => this.props.navigation.navigate("RouteThree")}
         />
       </View>
     )
   }
 }
 
-const SwitchNavigator = createSwitchNavigator({
+class ScreenThree extends React.Component {
+  render() {
+    return (
+      <View style={styles.screenThree}>
+        <Text>This is Screen Three</Text>
+        <Button
+          title="Screen One"
+          onPress={() => this.props.navigation.navigate("RouteOne")}
+        />
+      </View>
+    )
+  }
+}
+const StackNavigator = createStackNavigator({
+  "RouteB": ScreenB,
   "RouteOne": ScreenOne,
-  "RouteTwo": ScreenTwo
+  "RouteTwo": ScreenTwo,
+  "RouteThree": ScreenThree
+}, {
+  headerMode: "none",
+})
+
+const SwitchNavigator = createSwitchNavigator({
+  "RouteA": ScreenA,
+  "RouteB": StackNavigator
 })
 
 const AppNavigation = createAppContainer(SwitchNavigator);
 
 const styles = StyleSheet.create({
-  container: {
+  screenA: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 25,
+    borderColor: "black"
+  },
+  screenB: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 25,
+    borderColor: "red"
   },
   screenOne: {
     flex: 1,
@@ -61,5 +126,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 25,
     borderColor: "pink"
+  },
+  screenThree: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 25,
+    borderColor: "purple"
   }
 });
