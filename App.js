@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Button, View, Text } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 
 export default function App() {
   return (
@@ -9,10 +11,22 @@ export default function App() {
   );
 }
 
+
+class ScreenX extends React.Component {
+  render() {
+    return (
+      <View style={styles.screenX}>
+        <Text>This is Tab X</Text>
+      </View>
+    )
+  }
+}
+
 class ScreenA extends React.Component {
   render() {
     return (
       <View style={styles.screenA}>
+        <Text>This is Tab Y</Text>
         <Text>This is Screen A</Text>
         <Button
           title="Screen B"
@@ -33,7 +47,7 @@ class ScreenB extends React.Component {
           onPress={() => this.props.navigation.navigate("RouteA")}
         />
         <Button
-          title="Switch Navigation to Screen One"
+          title="Screen One"
           onPress={() => this.props.navigation.navigate("RouteOne")}
         />
       </View>
@@ -96,7 +110,12 @@ const SwitchNavigator = createSwitchNavigator({
   "RouteB": StackNavigator
 })
 
-const AppNavigation = createAppContainer(SwitchNavigator);
+const TabNavigator = createBottomTabNavigator({
+  "TabX": ScreenX,
+  "TabY": SwitchNavigator,
+})
+
+const AppNavigation = createAppContainer(TabNavigator);
 
 const styles = StyleSheet.create({
   screenA: {
@@ -112,6 +131,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 25,
     borderColor: "red"
+  },
+  screenX: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 25,
+    borderColor: "blue"
   },
   screenOne: {
     flex: 1,
